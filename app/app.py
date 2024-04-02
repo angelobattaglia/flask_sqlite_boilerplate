@@ -28,7 +28,121 @@ import datetime
 
 ## Import the dao modules and the models module
 import models
+import utenti_dao
 
+## Here I call these functions for the creation of the DB tables at startup time
+from table_creation import create_table_utenti
+create_table_utenti()
+
+# create the application
+app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'gematria'
+
+
+# This is for login_manager 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+@app.route('/')
+def home():
+    return render_template('home.html', title='Home')
+
+#########################################################
+#########################################################
+#########################################################
+#######First the login and the sign-up page##############
+#########################################################
+#########################################################
+#########################################################
+#########################################################
+
+# Define the signup page
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup_function():
+
+    # I take from the form the input datas and import them locally as a dictionary
+    nuovo_utente_form = request.form.to_dict()
+
+    # I try to retrieve the unique email of the nuovo_utente_form from the db ..
+    user_in_db = utenti_dao.get_user_by_nickname(nuovo_utente_form.get('email'))
+
+    # ... and I check weather it has already been registered ..
+    if user_in_db:
+        flash('There\'s already a user with these credentials', 'danger')
+        return redirect(url_for('signup'))
+    # .. and if it hasn't been registered ..
+    else:
+        # I generate an hash for the password that has been inserted by the form input
+        nuovo_utente_form['password'] = ws.generate_password_hash(nuovo_utente_form.get('password'))
+
+        # I add the user to the db using the method "add_user" from the utenti_dao.py
+        success = utenti_dao.add_user(nuovo_utente_form)
+
+        if success:
+            flash('Utente creato correttamente', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Errore nella creazione del utente: riprova!', 'danger')
+            return redirect(url_for('signup'))
+
+@login_manager.user_loader
+def load_user(user_id):
+    db_user = utenti_dao.get_user_by_id(user_id)
+    if db_user is not None:
+        user = models.User(id=db_user['id'], 
+                           nickname=db_user['nickname'],	
+                           email=db_user['email'],
+                           password=db_user['password'])
+    else:
+        user = None
+    return user
+
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
+
+@app.route('/login', methods=['POST'])
+def login_post():
+
+    # Retrieving the informations from the form @ /login
+    utente_form = request.form.to_dict()
+    # Using the "get_user_by_nickname" method from utenti.dao, which
+    # retrieves the user from the database with the given nickname passed
+    # from the form in /login
+    utente_db = utenti_dao.get_user_by_email(utente_form['email'])
+
+    # If there's no utente_db in the database (meaning the user just doesn't exist into the db)
+    # or if the password given as input in the form /login isn't equal to the one in the database
+    if not utente_db or not ws.check_password_hash(utente_db['password'], utente_form['password']):
+        flash('Credenziali non valide, riprova', 'danger')
+        return redirect(url_for('home'))
+    else:
+    # if, instead, it exists, we create a new user instance using the "User model" defined in models.py
+        # Create a new user instance called "new"
+        new = models.User(id=utente_db['id'], 
+                          nickname=utente_db['nickname'], 
+                          email=utente_db['email'],
+                          password=utente_db['password'])
+        # We log in said user called "new"
+        flask_login.login_user(new, True)
+        flash('Bentornato ' + utente_db['nickname'] + '!', 'success')
+        return redirect(url_for('home'))
+
+# Log out route
+@app.route("/logout")
+@login_required
+def logout():
+    flask_login.logout_user()
+    return redirect(url_for('home'))
+
+@app.route('/about')
+def about():
+    return render_template('about.html', title='About Us')
 
 
 
