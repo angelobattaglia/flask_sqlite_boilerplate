@@ -1,5 +1,4 @@
 # Note: it is important to add "render_template" to the imports
-from flask import Flask, render_template
 from flask import Flask, render_template, request
 from flask import redirect, url_for, flash, abort
 
@@ -23,8 +22,8 @@ from PIL import Image
 PROFILE_IMG_HEIGHT = 130
 POST_IMG_WIDTH = 300
 
-# Import the datetime library to handle the pubblication date of the raccolte
-import datetime
+# Import the datetime library to handle the pubblication dates of the posts or insertions
+# import datetime
 
 ## Import the dao modules and the models module
 import models
@@ -39,14 +38,13 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'gematria'
 
-
 # This is for login_manager 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 @app.route('/')
 def home():
-    return render_template('home.html', title='Home')
+    return render_template('home.html', title='Home', active_page='home')
 
 #########################################################
 #########################################################
@@ -103,7 +101,7 @@ def load_user(user_id):
 
 @app.route('/login', methods=['GET'])
 def login():
-    return render_template('login.html')
+    return render_template('login.html', active_page="login")
 
 @app.route('/login', methods=['POST'])
 def login_post():
@@ -140,7 +138,7 @@ def logout():
 
 @app.route('/about')
 def about():
-    return render_template('about.html', title='About Us')
+    return render_template('about.html', title='About Us', active_page='about')
 
 
 

@@ -15,10 +15,21 @@
         body {
         margin-top: 20px;
         }
+        .active {
+            color: #ff4500; /* A pleasant orange-red color */
+            text-decoration: none; /* Remove underline */
+            font-weight: bold; /* Slightly bold */
+            border: 2px solid #ff4500; /* Border to make it look like a button */
+            border-radius: 5px; /* Rounded corners */
+            padding: 5px 10px; /* Padding to make it look like a button */
+            background-color: #fff3e6; /* Light background color for contrast */
+        }
+        .active:hover {
+            background-color: #ff4500; /* Change background on hover */
+            color: #ffffff; /* Change text color on hover */
+        }
     </style>
-
 </head>
-
 
 <body>
     <header class="container text-center my-4">
@@ -28,39 +39,43 @@
             </div>
         </div>
 
-        <nav class="row">
+    <nav class="row">
             <div class="col">
-                <ul class="nav justify-content-center">
+                <ul class="nav justify-content-start">
+                    <li class="nav-item">
+                        <a class="nav-link {% if active_page == 'home' %}active{% endif %}" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if active_page == 'about' %}active{% endif %}" href="{{ url_for('about') }}">About</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col">
+                <ul class="nav justify-content-end">
+                    {% if not current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'login' %}active{% endif %}" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_page == 'signup' %}active{% endif %}" href="{{ url_for('signup') }}">Sign Up</a>
+                        </li>
+                    {% endif %}
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
                             <span class="nav-link disabled">Logged in as {{ current_user.email }}</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
                             <span class="nav-link disabled">Not logged in</span>
                         </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
-                    </li>
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
-                        </li>
-                    {% endif %}
                 </ul>
             </div>
         </nav>
+
     </header>
 
     {% block content %}
