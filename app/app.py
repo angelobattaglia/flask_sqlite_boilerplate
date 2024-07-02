@@ -58,7 +58,7 @@ def home():
 # Define the signup page
 @app.route('/signup')
 def signup():
-    return render_template('signup.html')
+    return render_template('signup.html', active_page="signup")
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_function():
