@@ -38,3 +38,12 @@ pip freeze > requirements.txt
 ```
 
 As for the db viewer, it's recommended to use the [sqlitebrowser](https://sqlitebrowser.org/)
+
+# Users in the database
+
+There's one user user in the DB 
+
+```csv
+email, password
+b@t.com, grovestreet
+```

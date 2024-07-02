@@ -18,9 +18,8 @@ user = User(id=1, nickname='john_doe', password='hashed_password_here',
 
 """
 class User(UserMixin):
-    def __init__(self, id, nickname, email, password):
+    def __init__(self, id, email, password):
         self.id = id
-        self.nickname = nickname
         self.email = email
         # self.usr_type = usr_type # if your app has to model multiple types of users, add also to the constructor above
         self.password = password

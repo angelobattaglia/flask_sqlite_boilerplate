@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}signup{% endblock %}
+{% block signup_active %}active{% endblock %}
+
+{% block content %}
+<div class="container mt-5"> <!-- Adds a top margin and centers content -->
+
+    <div class="d-flex justify-content-start mb-4"> <!-- Ensures button is aligned to the start and adds bottom margin -->
+        <a href="/" class="btn btn-primary">Torna indietro</a>
+    </div>
+
+    <div class="col-4 offset-md-4 bg-light p-4 border rounded">
+        <form action="/signup" method="POST" enctype="multipart/form-data">
+            <div class="mb-3">
+                <!-- Frontend Validation, if the email doesn't match the pattern of a typical email -->
+                <label for="emailInput" class="form-label">Email</label>
+                <!--<input type="text" class="form-control" name="email" id="emailInput">-->
+                <input type="email" class="form-control" required minlength="6" maxlength="30" name="email" id="emailInput" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address.">
+                <div id="passwordHelp" class="form-text">Non condivideremo mai la tua email con nessun altro.</div>
+            </div>
+            <div class="mb-3">
+                <label for="passwordInput" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="passwordInput" required minlength="8" maxlength="30">
+                <div id="passwordHelp" class="form-text" >Non condivideremo mai la tua password con nessun altro.</div>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrati</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

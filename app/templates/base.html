@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>{% block title %}Flask_SQLite_Boilerplate{% endblock %}</title>
+    <title>{% block title %}Flask SQLite Boilerplate{% endblock %}</title>
     
     <!--Commenting the import of the handmade CSS file to use Bootstrap-->
     <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
@@ -24,7 +24,7 @@
     <header class="container text-center my-4">
         <div class="row mb-4">
             <div class="col">
-                <h1 class="display-4">Flask_SQLite_Boilerplate</h1>
+                <h1 class="display-4">Flask SQLite Boilerplate</h1>
             </div>
         </div>
 
@@ -33,7 +33,7 @@
                 <ul class="nav justify-content-center">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <span class="nav-link disabled">Logged in as {{ current_user.nickname }}</span>
+                            <span class="nav-link disabled">Logged in as {{ current_user.email }}</span>
                         </li>
                     {% else %}
                         <li class="nav-item">
@@ -42,9 +42,6 @@
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('') }}">Placeholder</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('about') }}">About</a>
@@ -66,6 +63,8 @@
         </nav>
     </header>
 
+    {% block content %}
+    {% endblock %}
 
     <!-- Adding javascript for animations and components that are not made with CSS  -->
     <!-- This tecnique is called "deferred script loading" or "deferred script placement, and it is tipically placed at the end of the <body> tag -->

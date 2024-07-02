@@ -31,8 +31,8 @@ import models
 import utenti_dao
 
 ## Here I call these functions for the creation of the DB tables at startup time
-from table_creation import create_table_utenti
-create_table_utenti()
+from table_creation import create_table_users
+create_table_users()
 
 # create the application
 app = Flask(__name__)
@@ -69,7 +69,7 @@ def signup_function():
     nuovo_utente_form = request.form.to_dict()
 
     # I try to retrieve the unique email of the nuovo_utente_form from the db ..
-    user_in_db = utenti_dao.get_user_by_nickname(nuovo_utente_form.get('email'))
+    user_in_db = utenti_dao.get_user_by_email(nuovo_utente_form.get('email'))
 
     # ... and I check weather it has already been registered ..
     if user_in_db:
@@ -95,7 +95,6 @@ def load_user(user_id):
     db_user = utenti_dao.get_user_by_id(user_id)
     if db_user is not None:
         user = models.User(id=db_user['id'], 
-                           nickname=db_user['nickname'],	
                            email=db_user['email'],
                            password=db_user['password'])
     else:
@@ -119,18 +118,17 @@ def login_post():
     # If there's no utente_db in the database (meaning the user just doesn't exist into the db)
     # or if the password given as input in the form /login isn't equal to the one in the database
     if not utente_db or not ws.check_password_hash(utente_db['password'], utente_form['password']):
-        flash('Credenziali non valide, riprova', 'danger')
+        flash('Invalid credentials, retry', 'danger')
         return redirect(url_for('home'))
     else:
     # if, instead, it exists, we create a new user instance using the "User model" defined in models.py
         # Create a new user instance called "new"
         new = models.User(id=utente_db['id'], 
-                          nickname=utente_db['nickname'], 
                           email=utente_db['email'],
                           password=utente_db['password'])
         # We log in said user called "new"
         flask_login.login_user(new, True)
-        flash('Bentornato ' + utente_db['nickname'] + '!', 'success')
+        flash('Welcome back ' + utente_db['email'] + '!', 'success')
         return redirect(url_for('home'))
 
 # Log out route
