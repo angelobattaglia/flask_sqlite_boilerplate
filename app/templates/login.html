@@ -4,7 +4,7 @@
         <div class="container mt-5"> <!-- Adds a top margin and centers content -->
 
                 <div class="d-flex justify-content-start mb-4"> <!-- Ensures button is aligned to the start and adds bottom margin -->
-                    <a href="/" class="btn btn-primary">Torna indietro</a>
+                    <a href="/" class="btn btn-primary">Go Back</a>
                 </div>
 
                 <div class="col-4 offset-md-4 bg-light p-4 border rounded">
@@ -15,18 +15,16 @@
                             <!-- The following is the label Nickname -->
                             <label for="nicknameInput" class="form-label">Email</label>
                             <!-- The following is the input that goes under the name "nickname" -->
-                            <!-- Uso le espressioni regolari per capire se l'email insierita è corretta-->
+                            <!-- Using regular expressions to check if the entered email is correct -->
                             <!-- 
-                                IMPORTANTE usare type="email" perché il tipo di input dell'e-mail è ancora impostato su type="text", che potrebbe non utilizzare completamente 
-                                la convalida integrata del browser per gli indirizzi e-mail. 
-                                Per migliorare la convalida e garantire che funzioni in modo efficace, è necessario modificare il "type" di input per l'e-mail da "text" a "email". 
-                                Questa modifica non solo applica la convalida del modello, ma sfrutta anche le capacità intrinseche del browser per convalidare gli indirizzi email.
-                                La modifica di type="text" in type="email" indica al browser che l'input è specifico per un indirizzo email.
-                                Questa modifica fornisce un doppio livello di convalida: uno tramite il meccanismo di convalida email nativo del browser 
-                                e un altro tramite il pattern regex fatto ad hoc.
+                                IMPORTANT: USE TYPE="EMAIL" BECAUSE THE INPUT TYPE FOR THE EMAIL IS STILL SET TO TYPE="TEXT", WHICH MIGHT NOT FULLY UTILIZE THE BROWSER'S BUILT-IN VALIDATION FOR EMAIL ADDRESSES.
+                                TO IMPROVE VALIDATION AND ENSURE IT WORKS EFFECTIVELY, THE INPUT TYPE FOR THE EMAIL SHOULD BE CHANGED FROM "TEXT" TO "EMAIL". 
+                                THIS CHANGE NOT ONLY APPLIES PATTERN VALIDATION BUT ALSO LEVERAGES THE BROWSER'S INTRINSIC CAPABILITIES TO VALIDATE EMAIL ADDRESSES.
+                                CHANGING TYPE="TEXT" TO TYPE="EMAIL" INFORMS THE BROWSER THAT THE INPUT IS SPECIFIC TO AN EMAIL ADDRESS.
+                                THIS MODIFICATION PROVIDES A DUAL LAYER OF VALIDATION: ONE THROUGH THE BROWSER'S NATIVE EMAIL VALIDATION MECHANISM AND ANOTHER THROUGH THE CUSTOM REGEX PATTERN.
                             -->
                             <input type="email" class="form-control" name="email" id="emailInput" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address.">
-                            <!-- Il seguente è quello che usavo prima-->
+                            <!-- The following is what I was using before-->
                             <!--<input type="text" class="form-control" name="email" id="emailInput">-->
                         </div>
 
@@ -35,10 +33,10 @@
                             <label for="passwordInput" class="form-label">Password</label>
                             <!-- The following is the input that goes under the name "password" -->
                             <input type="password" class="form-control" name="password" id="passwordInput">
-                            <div id="passwordHelp" class="form-text">Non condivideremo mai la tua password con nessun altro.</div>
+                            <div id="passwordHelp" class="form-text">We won't share your password with third parties.</div>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3">Accedi</button>
-                        <small>Non hai ancora un account? <a href="/signup">Registrati</a></small>
+                        <button type="submit" class="btn btn-primary mt-3">login</button>
+                        <small>Aren't you singed up yet? <a href="/signup">sign up</a></small>
                     </form>
                 </div>
         </div>

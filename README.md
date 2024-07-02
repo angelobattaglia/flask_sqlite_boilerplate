@@ -39,7 +39,7 @@ pip freeze > requirements.txt
 
 As for the db viewer, it's recommended to use the [sqlitebrowser](https://sqlitebrowser.org/)
 
-# Users in the database
+## Users in the database
 
 There's one user user in the DB 
 
@@ -47,3 +47,14 @@ There's one user user in the DB
 email, password
 b@t.com, grovestreet
 ```
+
+## Details
+
+The login and signup system is made so that we're using the email to refer to the user. It is
+modular, meaning that we could add a nickname to address the user. But by doing so, it's important
+to modify the routes in the app.py named "signup" and "login".
+
+
+### Table Creation
+
+The creation of the tables is being done in app/table_creation.py

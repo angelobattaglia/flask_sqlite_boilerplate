@@ -28,7 +28,7 @@ import datetime
 
 ## Import the dao modules and the models module
 import models
-import utenti_dao
+import users_dao
 
 ## Here I call these functions for the creation of the DB tables at startup time
 from table_creation import create_table_users
@@ -69,7 +69,7 @@ def signup_function():
     nuovo_utente_form = request.form.to_dict()
 
     # I try to retrieve the unique email of the nuovo_utente_form from the db ..
-    user_in_db = utenti_dao.get_user_by_email(nuovo_utente_form.get('email'))
+    user_in_db = users_dao.get_user_by_email(nuovo_utente_form.get('email'))
 
     # ... and I check weather it has already been registered ..
     if user_in_db:
@@ -81,7 +81,7 @@ def signup_function():
         nuovo_utente_form['password'] = ws.generate_password_hash(nuovo_utente_form.get('password'))
 
         # I add the user to the db using the method "add_user" from the utenti_dao.py
-        success = utenti_dao.add_user(nuovo_utente_form)
+        success = users_dao.add_user(nuovo_utente_form)
 
         if success:
             flash('Utente creato correttamente', 'success')
@@ -92,7 +92,7 @@ def signup_function():
 
 @login_manager.user_loader
 def load_user(user_id):
-    db_user = utenti_dao.get_user_by_id(user_id)
+    db_user = users_dao.get_user_by_id(user_id)
     if db_user is not None:
         user = models.User(id=db_user['id'], 
                            email=db_user['email'],
@@ -109,15 +109,15 @@ def login():
 def login_post():
 
     # Retrieving the informations from the form @ /login
-    utente_form = request.form.to_dict()
+    user_form = request.form.to_dict()
     # Using the "get_user_by_nickname" method from utenti.dao, which
     # retrieves the user from the database with the given nickname passed
     # from the form in /login
-    utente_db = utenti_dao.get_user_by_email(utente_form['email'])
+    utente_db = users_dao.get_user_by_email(user_form['email'])
 
     # If there's no utente_db in the database (meaning the user just doesn't exist into the db)
     # or if the password given as input in the form /login isn't equal to the one in the database
-    if not utente_db or not ws.check_password_hash(utente_db['password'], utente_form['password']):
+    if not utente_db or not ws.check_password_hash(utente_db['password'], user_form['password']):
         flash('Invalid credentials, retry', 'danger')
         return redirect(url_for('home'))
     else:
