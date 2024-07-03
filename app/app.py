@@ -64,10 +64,10 @@ def signup():
 def signup_function():
 
     # I take from the form the input datas and import them locally as a dictionary
-    nuovo_utente_form = request.form.to_dict()
+    new_user_form = request.form.to_dict()
 
     # I try to retrieve the unique email of the nuovo_utente_form from the db ..
-    user_in_db = users_dao.get_user_by_email(nuovo_utente_form.get('email'))
+    user_in_db = users_dao.get_user_by_email(new_user_form.get('email'))
 
     # ... and I check weather it has already been registered ..
     if user_in_db:
@@ -76,10 +76,10 @@ def signup_function():
     # .. and if it hasn't been registered ..
     else:
         # I generate an hash for the password that has been inserted by the form input
-        nuovo_utente_form['password'] = ws.generate_password_hash(nuovo_utente_form.get('password'))
+        new_user_form['password'] = ws.generate_password_hash(new_user_form.get('password'))
 
         # I add the user to the db using the method "add_user" from the utenti_dao.py
-        success = users_dao.add_user(nuovo_utente_form)
+        success = users_dao.add_user(new_user_form)
 
         if success:
             flash('Utente creato correttamente', 'success')
